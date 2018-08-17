@@ -1,7 +1,10 @@
 /*!
- * jQuery UI Touch Punch 0.2.3
- *
- * Copyright 2011–2014, Dave Furfero
+ * Based on the original jQuery UI Touch Punch 0.2.3
+ * (Copyright 2011–2014, Dave Furfero)
+ * 
+ * Patched to prevent interference with form elements and
+ * elements given the classname "touchpunch-ignore"
+
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  * Depends:
@@ -29,6 +32,19 @@
    * @param {String} simulatedType The corresponding mouse event
    */
   function simulateMouseEvent (event, simulatedType) {
+
+    // don't generate mouse events for form elements and elements
+    // with the class "touchpunch-ignore"
+    if ($(event.target).is("input")    || 
+        $(event.target).is("textarea") || 
+        $(event.target).is("button")   || 
+        $(event.target).is("a")        || 
+        $(event.target).is("select")   ||
+        $(event.target).hasClass('touchpunch-ignore')) {
+        return;
+    } else {
+        event.preventDefault();
+    }
 
     // Ignore multi-touch events
     if (event.originalEvent.touches.length > 1) {
@@ -70,6 +86,15 @@
   mouseProto._touchStart = function (event) {
 
     var self = this;
+
+    // Allow focus on inputs. Issue #142
+    if (event.originalEvent.target.localName == 'textarea' || 
+        event.originalEvent.target.localName == 'input'    || 
+        event.originalEvent.target.localName == 'a'        || 
+        event.originalEvent.target.localName == 'span'     ||
+        event.originalEvent.target.localName == 'select') {
+      return true;
+    }
 
     // Ignore the event if another widget is already being handled
     if (touchHandled || !self._mouseCapture(event.originalEvent.changedTouches[0])) {

@@ -1,4 +1,7 @@
 # jQuery UI Touch Punch
+
+This repsitory was based on the original [jQuery UI Touch Punch 0.2.3](https://github.com/furf/jquery-ui-touch-punch) Copyright 2011–2014, Dave Furfero.  It has been updated to prevent interference with form elements and elements given the classname "touchpunch-ignore".
+
 ## Touch Event Support for jQuery UI
 
 > **jQuery UI Touch Punch is a small hack that enables the use of touch events on sites using the jQuery UI user interface library.**
